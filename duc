@@ -1,0 +1,81 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<vector>
+
+using namespace std;
+struct index
+{
+    string id;
+    int point;
+};
+struct sv
+{
+    string name;
+    string sex;
+    string add;
+    vector<struct index> arr_index;
+};
+
+void get_sv(ifstream &filein, struct sv &sv)
+{
+    getline(filein, sv.name, ",");
+    getline(filein, sv.sex, ",");
+    getline(filein, sv.add);
+}
+void get_index(ifstream &filein, struct index &indexx)
+{
+    getline(filein, indexx.id,"-");
+    getline(filein, indexx.point);
+}
+
+void get_info(ifstream &filein, vector<struct sv> &arr_sinhvien)
+{
+    while(!filein.eof()){
+        struct sv sv1;
+        get_sv(filein, sv1);
+        int n;
+        filein>>n;
+        for(int i=0;i<n;i++)
+        {
+            struct index index1;
+            get_index(filein, index1);
+            sv1.arr_index.push_back(index1);
+        }
+        arr_sinhvien.push_back(sv1);
+    }
+}
+void sv_out(struct sv sv1)
+{
+    cout<<endl<<endl;
+    cout<<sv1.name<<"-"<<sv.sex<<"-"<<sv.add<<endl;
+}
+void index_out(struct index index1)
+{
+    cout<<index1.id<<"-"<<index1.point;
+}
+
+void test(vector<struct sv> arr)
+{
+    for(int i=0;i<arr.size();i++){
+        cout<<"\nsinh vien thu "<<i+1;
+        sv_out(arr[i]);
+        for(int j=0; j<arr[i].arr_index.size();j++){
+            index_out(arr[i].arr_index[j]);
+        }
+    }
+}
+
+int main()
+{
+    cout<<"hello";
+
+    ifstream fileIn;
+    fileIn.open("input.txt", ios_base::in);
+    vector<struct sv> sv_arr;
+    get_info(fileIn, sv_arr);
+    test(sv_arr);
+    fileIn.close();
+    return 0;
+}
+
